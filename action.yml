@@ -1,0 +1,26 @@
+name: "Skills Network Pilot setup"
+description: "Exchanges deployment token for cloud provider credentials, initializes cloud provider cli"
+branding:
+  icon: "cloud"
+  color: "green"
+
+inputs:
+  exchange_token:
+    required: true
+    description: Token used by Pilot to exchange for cloud provider credentials. Automatically set as a repository secret by Pilot, should be available as `${{ secrets.PILOT_EXCHANGE_TOKEN }}`.
+  exchange_endpoint:
+    required: true
+    description: Pilot exchange URL used for the request to exchange the token for cloud provider credentials. Automatically set as a repository secret by Pilot, should be available as `${{ secrets.PILOT_EXCHANGE_ENDPOINT }}`.
+
+runs:
+  using: "composite"
+  steps:
+  - id: perform_exchange
+    shell: bash
+    run: echo "::set-output name=exchange_json::$(curl -sL -XPOST -d token=${{ inputs.exchange_token }} ${{ inputs.exchange_endpoint }})"
+  - uses: ibm-skills-network/action-ibmcloud-cli@v1
+    if: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.cloud_provider_slug == "ibm_cloud" }}
+    with:
+      ibm-cloud-api-key: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.api_key }}
+      ibm-cloud-region: us-south
+      ibm-cloud-cli-plugins: container-service
