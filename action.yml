@@ -24,3 +24,6 @@ runs:
       ibm-cloud-api-key: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.credentials.api_key }}
       ibm-cloud-region: us-south
       ibm-cloud-cli-plugins: container-service
+  - if: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.cloud_provider_slug == 'ibm_cloud' }}
+    shell: bash
+    run: ibmcloud ks cluster config --cluster ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.infrastructure_id }}
