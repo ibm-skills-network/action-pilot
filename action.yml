@@ -19,8 +19,8 @@ runs:
     shell: bash
     run: echo "::set-output name=exchange_json::$(curl -sL -XPOST -d token=${{ inputs.exchange_token }} ${{ inputs.exchange_endpoint }})"
   - uses: ibm-skills-network/action-ibmcloud-cli@v1
-    if: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.cloud_provider_slug == "ibm_cloud" }}
+    if: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.cloud_provider_slug == 'ibm_cloud' }}
     with:
-      ibm-cloud-api-key: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.api_key }}
+      ibm-cloud-api-key: ${{ fromJson(steps.perform_exchange.outputs.exchange_json).data.credentials.api_key }}
       ibm-cloud-region: us-south
       ibm-cloud-cli-plugins: container-service
