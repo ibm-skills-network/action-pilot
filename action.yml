@@ -7,10 +7,10 @@ branding:
 inputs:
   exchange_token:
     required: true
-    description: Token used by Pilot to exchange for cloud provider credentials. Automatically set as a repository secret by Pilot, should be available as `${{ secrets.PILOT_EXCHANGE_TOKEN }}`.
+    description: Token used by Pilot to exchange for cloud provider credentials. Automatically set as a repository secret by Pilot, should be available as `secrets.PILOT_EXCHANGE_TOKEN`.
   exchange_endpoint:
     required: true
-    description: Pilot exchange URL used for the request to exchange the token for cloud provider credentials. Automatically set as a repository secret by Pilot, should be available as `${{ secrets.PILOT_EXCHANGE_ENDPOINT }}`.
+    description: Pilot exchange URL used for the request to exchange the token for cloud provider credentials. Automatically set as a repository secret by Pilot, should be available as `secrets.PILOT_EXCHANGE_ENDPOINT`.
 
 runs:
   using: "composite"
